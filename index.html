@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>그림판</title>
+    <link rel="icon" type="image/png" href="img/paint.png" />
+    <script src="https://kit.fontawesome.com/f506734a62.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="app.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <img src="img/paint.png" alt="그림판" class="header-icon" />
+        <div class="header-menu">
+          <button class="menu-btn" data-btn="save">
+            <img src="img/save.png" alt="저장" data-change="save" />
+          </button>
+          <button class="menu-btn" data-btn="undo">
+            <i class="fa-solid fa-arrow-rotate-left"></i>
+          </button>
+          <button class="menu-btn" data-btn="redo">
+            <i class="fa-solid fa-arrow-rotate-right"></i>
+          </button>
+          <button class="menu-btn" data-btn="theme">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mode">
+        <strong class="mode-name">크기</strong>
+        <div class="range-input">
+          <input type="range" class="range-bar" min="1" max="50" value="5" />
+          <input type="number" class="range-value" min="1" max="50" value="5" />
+        </div>
+        <div class="brush-size">
+          <div class="size-px" data-pixel="1">
+            <span class="px-unit">1px</span>
+            <span class="px-line"></span>
+          </div>
+          <div class="size-px" data-pixel="3">
+            <span class="px-unit">3px</span>
+            <span class="px-line"></span>
+          </div>
+          <div class="size-px" data-pixel="5">
+            <span class="px-unit">5px</span>
+            <span class="px-line"></span>
+          </div>
+          <div class="size-px" data-pixel="8">
+            <span class="px-unit">8px</span>
+            <span class="px-line"></span>
+          </div>
+        </div>
+      </div>
+      <div class="mode">
+        <strong class="mode-name">도구</strong>
+        <div class="tools">
+          <button class="activated" data-mode="draw">
+            <img src="img/draw.png" alt="그리기" data-change="draw" />
+          </button>
+          <button data-mode="fill">
+            <img src="img/fill.png" alt="채우기" data-change="fill" />
+          </button>
+          <button data-mode="text">
+            <img src="img/text.png" alt="텍스트 삽입" data-change="text" />
+          </button>
+          <label for="file" data-mode="image">
+            <i class="fa-regular fa-image"></i>
+            <input type="file" id="file" class="file-input" accept="image/*" />
+          </label>
+          <button data-mode="erase">
+            <img src="img/eraser.png" alt="지우기" data-change="eraser" />
+          </button>
+          <button data-mode="clear">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mode">
+        <strong class="mode-name">텍스트</strong>
+        <div class="font-option">
+          <select class="font-family">
+            <option value="Nanum Gothic" style="font-family: 'Nanum Gothic', sans-serif" selected>맑은 고딕</option>
+            <option value="Noto Sans KR" style="font-family: 'Noto Sans KR', sans-serif">Noto Sans KR</option>
+            <option value="Roboto" style="font-family: 'Roboto', sans-serif">Roboto</option>
+            <option value="NanumSquareNeo-Variable" style="font-family: 'NanumSquareNeo-Variable'">나눔스퀘어 네오</option>
+            <option value="Binggrae" style="font-family: 'Binggrae'">빙그레체</option>
+            <option value="establishRoomNo703OTF" style="font-family: 'establishRoomNo703OTF'">칠백삼체</option>
+            <option value="BMJUA" style="font-family: 'BMJUA'">Jua</option>
+            <option value="Cafe24Ssurround" style="font-family: 'Cafe24Ssurround'">카페24 써라운드</option>
+            <option value="D2Coding" style="font-family: 'D2Coding'">D2Coding</option>
+            <option value="Ubuntu Mono" style="font-family: 'Ubuntu Mono', monospace">Ubuntu Mono</option>
+          </select>
+          <select class="font-size">
+            <option value="12">12</option>
+            <option value="14">14</option>
+            <option value="16" selected>16</option>
+            <option value="18">18</option>
+            <option value="20">20</option>
+            <option value="24">24</option>
+            <option value="28">28</option>
+            <option value="32">32</option>
+            <option value="36">36</option>
+            <option value="48">48</option>
+            <option value="64">64</option>
+            <option value="72">72</option>
+            <option value="84">84</option>
+            <option value="96">96</option>
+          </select>
+          <select class="font-weight">
+            <option value="300">얇게</option>
+            <option value="400" selected>보통</option>
+            <option value="bold">굵게</option>
+          </select>
+        </div>
+        <input class="text-input" type="text" placeholder="원하는 문구를 입력하세요" />
+      </div>
+      <div class="mode">
+        <strong class="mode-name">색상</strong>
+        <div class="color-box">
+          <div class="color-option" style="background: #880015" data-color="#880015"></div>
+          <div class="color-option" style="background: #ed1c24" data-color="#ED1C24"></div>
+          <div class="color-option" style="background: #ff7f27" data-color="#FF7F27"></div>
+          <div class="color-option" style="background: #fff200" data-color="#FFF200"></div>
+          <div class="color-option" style="background: #22b14c" data-color="#22B14C"></div>
+          <div class="color-option" style="background: #00a2e8" data-color="#00A2E8"></div>
+          <div class="color-option" style="background: #3f48cc" data-color="#3F48CC"></div>
+          <div class="color-option" style="background: #a349a4" data-color="#A349A4"></div>
+          <div class="color-option" style="background: #b97a57" data-color="#B97A57"></div>
+          <div class="color-option" style="background: #ffaec9" data-color="#FFAEC9"></div>
+          <div class="color-option" style="background: #ffc90e" data-color="#FFC90E"></div>
+          <div class="color-option" style="background: #efe4b0" data-color="#EFE4B0"></div>
+          <div class="color-option" style="background: #b5e61d" data-color="#B5E61D"></div>
+          <div class="color-option" style="background: #99d9ea" data-color="#99D9EA"></div>
+          <div class="color-option" style="background: #7092be" data-color="#7092BE"></div>
+          <div class="color-option" style="background: #c8bfe7" data-color="#C8BFE7"></div>
+          <div class="color-option" style="background: #000000" data-color="#000000"></div>
+          <div class="color-option" style="background: #333333" data-color="#333333"></div>
+          <div class="color-option" style="background: #666666" data-color="#666666"></div>
+          <div class="color-option" style="background: #999999" data-color="#999999"></div>
+          <div class="color-option" style="background: #bdbdbd" data-color="#bdbdbd"></div>
+          <div class="color-option" style="background: #f5f5f5" data-color="#f5f5f5"></div>
+          <div class="color-option" style="background: #fdfdfd" data-color="#fdfdfd"></div>
+          <div class="color-option" style="background: #ffffff" data-color="#ffffff"></div>
+        </div>
+        <input class="color-picker" type="color" />
+      </div>
+    </div>
+    <canvas></canvas>
+    <div class="screen">
+      <img src="img/paint.png" alt="그림판 아이콘" class="screen-icon" />
+      <p class="guide-message">죄송합니다. 해당 그림판 앱은 1280px부터 지원됩니다. 😅</p>
+    </div>
+  </body>
+</html>
