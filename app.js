@@ -125,3 +125,13 @@ function insertImage(event) {
     uploadImage.src = url;
   }
 }
+
+function clearCanvas() {
+  if (window.confirm('작업을 초기화할까요?')) {
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    canvasState = [];
+    step = -1;
+    textInput.value = '';
+    uploadImage = '';
+  }
+}
