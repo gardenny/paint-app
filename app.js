@@ -291,3 +291,13 @@ function keydownEvent(event) {
     redoCanvas();
   }
 }
+
+function toggleDarkMode() {
+  document.body.classList.toggle('theme-dark');
+  const willChangeImages = document.querySelectorAll('[data-change]');
+  willChangeImages.forEach(beforeImage => {
+    const afterImage = beforeImage.dataset.change;
+    if (document.body.classList.contains('theme-dark')) beforeImage.src = `img/${afterImage}-dark.png`;
+    else beforeImage.src = `img/${afterImage}.png`;
+  });
+}
