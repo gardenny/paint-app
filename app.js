@@ -169,3 +169,51 @@ function changeMode(event) {
       return;
   }
 }
+
+function moveRangeBar(event) {
+  const currentWidth = event.target.value;
+  ctx.lineWidth = currentWidth;
+  rangeValue.value = currentWidth;
+}
+
+function changeRangeValue(event) {
+  const currentValue = parseInt(event.target.value);
+  const maxValue = parseInt(event.target.max);
+  ctx.lineWidth = currentValue;
+  rangeBar.value = currentValue;
+
+  if (!currentValue) {
+    ctx.lineWidth = 1;
+    rangeBar.value = 1;
+    rangeValue.value = 1;
+  } else if (currentValue > maxValue) {
+    ctx.lineWidth = maxValue;
+    rangeBar.value = maxValue;
+    rangeValue.value = maxValue;
+  }
+}
+
+function runValidation(event) {
+  const key = event.key;
+  switch (key) {
+    case '+':
+    case '-':
+    case 'e':
+      event.preventDefault();
+      break;
+    case 'Enter':
+      rangeValue.blur();
+    default:
+      break;
+  }
+}
+
+function selectBrushSize(event) {
+  const target = event.target.className === 'size-px' ? event.target : event.target.parentNode;
+  const currentSize = target.dataset.pixel;
+  if (target.className === 'size-px') {
+    ctx.lineWidth = currentSize;
+    rangeBar.value = currentSize;
+    rangeValue.value = currentSize;
+  }
+}
