@@ -135,3 +135,37 @@ function clearCanvas() {
     uploadImage = '';
   }
 }
+
+function changeMode(event) {
+  const target = event.target.nodeName === 'BUTTON' || event.target.nodeName === 'LABEL' ? event.target : event.target.parentNode;
+  currentMode = target.dataset.mode;
+  if (!currentMode) return;
+
+  const activated = document.querySelector('.activated');
+  activated.classList.remove('activated');
+  target.classList.add('activated');
+
+  switch (currentMode) {
+    case 'draw':
+      canvas.style.cursor = 'url(img/cursor/draw.cur) 0 24, auto';
+      break;
+    case 'fill':
+      canvas.style.cursor = 'url(img/cursor/fill.cur), auto';
+      break;
+    case 'text':
+      canvas.style.cursor = 'url(img/cursor/text.cur) 0 24, text';
+      break;
+    case 'image':
+      canvas.style.cursor = 'url(img/cursor/image.cur), crosshair';
+      break;
+    case 'erase':
+      canvas.style.cursor = 'url(img/cursor/eraser.cur) 0 24, auto';
+      break;
+    case 'clear':
+      canvas.style.cursor = 'default';
+      clearCanvas();
+      break;
+    default:
+      return;
+  }
+}
