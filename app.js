@@ -231,3 +231,13 @@ function clickColorPicker(event) {
   ctx.strokeStyle = pickedColor;
   ctx.fillStyle = pickedColor;
 }
+
+function saveImage() {
+  // canvas 내의 그림 및 이미지들을 URL로 인코딩
+  const url = canvas.toDataURL();
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = 'myDrawing.png'; // download: href에 있는 콘텐츠 다운로드
+  anchor.click(); // 클릭 시 이미지.png 다운로드
+  anchor.remove();
+}
