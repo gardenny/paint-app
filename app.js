@@ -86,3 +86,42 @@ function handleDrawingMode(event) {
   ctx.beginPath(); // 이전에 그려진 canvas의 path와 연결 끊어줌
   ctx.moveTo(x, y); // 사용자의 마우스 위치로 ctx 실시간 이동
 }
+
+function handleInsertMode(event) {
+  switch (currentMode) {
+    case tools.fill:
+      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      break;
+    case tools.text:
+      insertText(event);
+      break;
+    case tools.image:
+      if (uploadImage) ctx.drawImage(uploadImage, event.offsetX, event.offsetY);
+      break;
+    default:
+      return;
+  }
+}
+
+function insertText(event) {
+  const text = textInput.value;
+  if (!text) return;
+  for (let i = 0; i < fonts.length; i++) {
+    if (fontFamily.value === fonts[i].family) {
+      ctx.font = `${fontWeight.value} ${fontSize.value}pt ${fonts[i].family}`;
+      fonts[i].load().then(() => ctx.fillText(text, event.offsetX, event.offsetY));
+    } else {
+      ctx.font = `${fontWeight.value} ${fontSize.value}pt ${fontFamily.value}`;
+      ctx.fillText(text, event.offsetX, event.offsetY);
+    }
+  }
+}
+
+function insertImage(event) {
+  const file = event.target.files[0]; // 사용자가 업로드한 이미지
+  if (file) {
+    const url = URL.createObjectURL(file); // 이미지의 브라우저 메모리 URL에 접근
+    uploadImage = document.createElement('img');
+    uploadImage.src = url;
+  }
+}
