@@ -55,3 +55,34 @@ ctx.lineWidth = rangeBar.value;
 ctx.lineCap = 'round';
 ctx.lineJoin = 'round';
 fonts.forEach(font => font.load().then(() => document.fonts.add(font)));
+
+function startDrawing() {
+  isDrawing = true;
+}
+
+function stopDrawing() {
+  isDrawing = false;
+}
+
+function handleDrawingMode(event) {
+  // 마우스 이벤트 좌표
+  const x = event.offsetX;
+  const y = event.offsetY;
+
+  if (isDrawing) {
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    switch (currentMode) {
+      case tools.draw:
+        ctx.strokeStyle = colorPicker.value;
+        break;
+      case tools.erase:
+        ctx.strokeStyle = '#ffffff';
+      default:
+        break;
+    }
+  }
+  ctx.beginPath(); // 이전에 그려진 canvas의 path와 연결 끊어줌
+  ctx.moveTo(x, y); // 사용자의 마우스 위치로 ctx 실시간 이동
+}
