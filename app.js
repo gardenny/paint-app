@@ -301,3 +301,52 @@ function toggleDarkMode() {
     else beforeImage.src = `img/${afterImage}.png`;
   });
 }
+
+canvas.addEventListener('contextmenu', event => event.preventDefault());
+canvas.addEventListener('mousemove', handleDrawingMode);
+canvas.addEventListener('mousedown', () => {
+  if (currentMode === tools.draw || currentMode === tools.erase) startDrawing();
+});
+canvas.addEventListener('mouseup', () => {
+  stopDrawing();
+  if (currentMode === tools.draw || currentMode === tools.erase) saveCanvasState();
+});
+canvas.addEventListener('mouseleave', () => {
+  if (isDrawing) saveCanvasState();
+  stopDrawing();
+});
+canvas.addEventListener('click', event => {
+  if (currentMode === tools.draw || currentMode === tools.erase) return;
+  handleInsertMode(event);
+  saveCanvasState();
+});
+
+headerMenu.addEventListener('click', event => {
+  const target = event.target.nodeName === 'BUTTON' ? event.target : event.target.parentNode;
+  const btn = target.dataset.btn;
+  switch (btn) {
+    case 'save':
+      saveImage();
+      break;
+    case 'undo':
+      undoCanvas();
+      break;
+    case 'redo':
+      redoCanvas();
+      break;
+    case 'theme':
+      toggleDarkMode();
+      break;
+    default:
+      break;
+  }
+});
+rangeBar.addEventListener('input', moveRangeBar);
+rangeValue.addEventListener('input', changeRangeValue);
+rangeValue.addEventListener('keydown', runValidation);
+brushSize.addEventListener('click', selectBrushSize);
+toolBox.addEventListener('click', changeMode);
+fileInput.addEventListener('change', insertImage);
+document.addEventListener('keydown', keydownEvent);
+colorBox.addEventListener('click', clickColorOption);
+colorPicker.addEventListener('change', clickColorPicker);
