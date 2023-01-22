@@ -217,3 +217,17 @@ function selectBrushSize(event) {
     rangeValue.value = currentSize;
   }
 }
+
+function clickColorOption(event) {
+  const colorOption = event.target.dataset.color;
+  if (!colorOption) return;
+  ctx.strokeStyle = colorOption;
+  ctx.fillStyle = colorOption;
+  colorPicker.value = colorOption;
+}
+
+function clickColorPicker(event) {
+  const pickedColor = event.target.value;
+  ctx.strokeStyle = pickedColor;
+  ctx.fillStyle = pickedColor;
+}
