@@ -241,3 +241,53 @@ function saveImage() {
   anchor.click(); // 클릭 시 이미지.png 다운로드
   anchor.remove();
 }
+
+function saveCanvasState() {
+  if ((currentMode === tools.text && !textInput.value) || (currentMode === tools.image && !uploadImage)) return;
+  step++;
+  if (step < canvasState.length) canvasState.length = step;
+
+  // 사용자가 그린 그림을 url 형태로 canvasState 배열에 저장
+  canvasState.push(canvas.toDataURL());
+  // console.log(step);
+}
+
+function undoCanvas() {
+  if (step > 0) {
+    step--;
+    // console.log(step);
+
+    const previousImage = document.createElement('img');
+    previousImage.src = canvasState[step];
+    previousImage.addEventListener('load', () => {
+      // 캔버스를 초기화한 후, 바로 직전에 저장된 그림 url(previousDataUrl)을 불러와서 다시 그려냄
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx.drawImage(previousImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    });
+  } else if (step === 0) {
+    step = -1;
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  }
+}
+
+function redoCanvas() {
+  if (step < canvasState.length - 1) {
+    step++;
+    // console.log(step);
+
+    const nextImage = document.createElement('img');
+    nextImage.src = canvasState[step];
+    nextImage.addEventListener('load', () => {
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      ctx.drawImage(nextImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    });
+  }
+}
+
+function keydownEvent(event) {
+  if (event.ctrlKey && event.key === 'z') {
+    undoCanvas();
+  } else if (event.ctrlKey && event.key === 'y') {
+    redoCanvas();
+  }
+}
