@@ -3,68 +3,163 @@
 # 🎨 Paint app
 
 자바스크립트 미니 그림판 어플 👉 [Demo](https://imjone.github.io/paint-app/)
-<br><br>
 
-## 📢 프로젝트 소개
+<br />
 
-### [미니 그림판 어플]
+## 📢 프로젝트 개요
 
-- canvas API를 활용한 미니 그림판
-- 다양한 작업 도구들과 기본적인 기능들 구현
-- 사용자의 눈을 보호하기 위한 다크모드 테마 지원
-<br><br>
+Canvas API를 사용하여 제작한 바닐라 자바스크립트 미니 그림판입니다.<br />
+그림판의 핵심 기능들(그리기, 채우기, 텍스트 및 이미지 삽입 등)을 구현하였으며,<br />
+사용자의 눈을 보호하기 위한 다크 모드 테마를 지원합니다.
+
+<br />
 
 ## 🗨️ 사용 기술
 
-![HTML](https://img.shields.io/badge/HTML-e34f26?style=flat-square&logo=HTML5&logoColor=white)
-![css](https://img.shields.io/badge/CSS-1572b6?style=flat-square&logo=CSS3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-f7df1e?style=flat-square&logo=JavaScript&logoColor=white)
-<br><br>
+<p>
+ <img src="https://img.shields.io/badge/HTML-e34f26?style=flat-square&logo=HTML5&logoColor=white" />
+ <img src="https://img.shields.io/badge/CSS-1572b6?style=flat-square&logo=CSS3&logoColor=white" />
+ <img src="https://img.shields.io/badge/JavaScript-f7df1e?style=flat-square&logo=JavaScript&logoColor=white" />
+</p>
+
+<br />
 
 ## 📋 주요 기능
 
-### 1. 브러쉬 사이즈 변경
+- 브러쉬 사이즈 변경
+- 작업 도구 모드 변경
+- 컬러 피커 및 컬러 팔레트
+- 작업 실행 취소 / 다시 실행
+- 라이트 모드 / 다크 모드 토글링
 
-- 사이즈 조절바 : 포인터를 움직이거나 숫자 입력
-- 픽셀 선택 버튼 : 4가지 사이즈를 시각적으로 선택
+<br />
 
-### 2. 작업 도구 모드 변경
+## 💻 소스 코드
 
-- 선 그리기/색 채우기/지우개 모드
-- 텍스트 삽입 : 글꼴, 두께, 크기 설정 가능
-- 이미지 삽입 : 원하는 이미지를 업로드하여 삽입
-- 작업 초기화 : 현재 진행 중인 모든 작업을 초기화
-- 각 도구에 맞게 마우스 커서 모양 변경
+전체 코드 보러 가기 👉 [Notion](https://imjone.notion.site/Paint-app-3b7fa527999141cbbe0b2885a43fed05)
 
-### 3. 색상 변경
+### 📍 그리기 모드 (선 그리기 / 지우개)
 
-- 컬러 피커를 통해 원하는 색상으로 변경
-- 인기 색상 목록 제공, 클릭 시 해당 색상으로 변경
+사용자가 마우스를 누르는 순간부터 바로 선을 그리기 시작해야 하기 때문에,<br />
+canvas 위에서 마우스가 이동 중이라면 `ctx`가 실시간으로 사용자의 마우스 위치를 따라갑니다.<br />
+마우스를 누르고 있을 때(`mousedown`) 그리기 모드가 시작되며, 마우스를 떼면(`mouseup`) 그리기 모드가 종료됩니다.
 
-### 4. 작업 실행 취소/다시 실행
+```javascript
+function startDrawing() {
+  isDrawing = true;
+}
 
-- 캔버스에 그려지는 모든 그림들을 URL 형태로 저장
-- 실행 취소 버튼 클릭 시 작업 취소
-- 다시 실행 버튼 클릭 시 원상 복구
+function stopDrawing() {
+  isDrawing = false;
+}
 
-### 5. 다크모드 지원
+function handleDrawingMode(event) {
+  const x = event.offsetX;
+  const y = event.offsetY;
 
-- 🌗 버튼을 클릭하여 라이트모드/다크모드 토글링
-- 현재 적용된 모드에 따라 변화하는 색상과 아이콘
-<br><br>
+  if (isDrawing) {
+    ctx.lineTo(x, y);
+    ctx.stroke();
 
-## 😊 나의 회고록
+    switch (currentMode) {
+      case tools.draw:
+        ctx.strokeStyle = colorPicker.value;
+        break;
+      case tools.erase:
+        ctx.strokeStyle = '#ffffff';
+      default:
+        break;
+    }
+  }
+  ctx.beginPath(); // 이전에 그려진 canvas의 path와 연결 끊어줌
+  ctx.moveTo(x, y); // 사용자의 마우스 위치로 ctx 실시간 이동
+}
 
-### 💧 어려웠던 점 및 개선 사항
+canvas.addEventListener('mousemove', handleDrawingMode);
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mouseup', stopDrawing);
+```
 
-캔버스의 작업들을 실시간으로 배열에 저장하는 기능을 구현하는 부분에서 많이 막혔었다.
-canvas API를 처음 사용해본 탓에 익숙하지도 않은 상태였고..
-에러를 잡아내는 데 꽤나 애를 먹었지만, 코드의 흐름을 차근차근 하나씩 따라가다 보니 답이 보였다.
-이 기세를 몰아서 미처 다 완성하지 못한 이미지 드래그 기능도 구현해보면 좋을 것 같다.
+### 📍 삽입 모드 (색 채우기 / 텍스트 / 이미지)
 
-### 🔥 배운 점 및 느낀 점
+현재 활성화된 모드에 따라 각각 다른 케이스가 실행됩니다.<br />
+`fill` - 현재 선택된 색상으로 canvas 전체를 가득 채웁니다.<br />
+`text` - `insertText` 함수를 호출하여 canvas에 텍스트를 그립니다.<br />
+`image` - `insertImage` 함수를 통해 업로드된 이미지를 canvas에 그립니다.
 
-그림판 기능을 구현하는 게 생각보다 재밌었다.
-이렇게 다양한 API들을 활용할 수 있는 자바스크립트의 매력에 완전히 푹 빠져버렸다.
-배우면 배울수록 구현할 수 있는 영역이 늘어나고, 더욱 다양한 사고를 할 수 있게 된다는 것이 너무 신기하고 재밌다.
-스스로 에러를 잡아나가면서 문제 해결 능력에 대한 자신감도 한층 상승했다. 더욱 힘내자!
+```javascript
+function handleInsertMode(event) {
+  switch (currentMode) {
+    case tools.fill:
+      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      break;
+    case tools.text:
+      insertText(event);
+      break;
+    case tools.image:
+      if (uploadImage) ctx.drawImage(uploadImage, event.offsetX, event.offsetY);
+      break;
+    default:
+      return;
+  }
+}
+
+function insertText(event) {
+  const text = textInput.value;
+  if (!text) return;
+  for (let i = 0; i < fonts.length; i++) {
+    if (fontFamily.value === fonts[i].family) {
+      ctx.font = `${fontWeight.value} ${fontSize.value}pt ${fonts[i].family}`;
+      fonts[i].load().then(() => ctx.fillText(text, event.offsetX, event.offsetY));
+    } else {
+      ctx.font = `${fontWeight.value} ${fontSize.value}pt ${fontFamily.value}`;
+      ctx.fillText(text, event.offsetX, event.offsetY);
+    }
+  }
+}
+
+function insertImage(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const url = URL.createObjectURL(file); // 이미지의 브라우저 메모리 URL에 접근
+    uploadImage = document.createElement('img');
+    uploadImage.src = url;
+  }
+}
+
+canvas.addEventListener('click', handleInsertMode);
+```
+
+### 📍 색상 변경하기
+
+사용자 편의성을 위해 컬러 피커 뿐만 아니라 인기 색상을 모아 놓은 컬러 팔레트 또한 함께 제공합니다.<br />
+원하는 색상을 클릭하면 `ctx`의 색상이 `data-color` 속성에 정의된 색상으로 변경됩니다.
+
+```html
+<div class="color-option" style="background: #880015" data-color="#880015"></div>
+<div class="color-option" style="background: #ed1c24" data-color="#ED1C24"></div>
+<div class="color-option" style="background: #ff7f27" data-color="#FF7F27"></div>
+<div class="color-option" style="background: #fff200" data-color="#FFF200"></div>
+<div class="color-option" style="background: #22b14c" data-color="#22B14C"></div>
+<div class="color-option" style="background: #00a2e8" data-color="#00A2E8"></div>
+<div class="color-option" style="background: #3f48cc" data-color="#3F48CC"></div>
+<div class="color-option" style="background: #a349a4" data-color="#A349A4"></div>
+...
+```
+```javascript
+function clickColorOption(event) {
+  const colorOption = event.target.dataset.color;
+  if (!colorOption) return;
+  ctx.strokeStyle = colorOption;
+  ctx.fillStyle = colorOption;
+  colorPicker.value = colorOption;
+}
+```
+
+<br />
+
+## 😊 배운 점 및 느낀 점
+
+- Canvas 라는 새로운 API를 사용해볼 수 있어 정말 신기하고 재밌는 경험이었습니다.
+- 문제가 발생했을 때 코드의 흐름을 차근차근 따라가며 답을 찾아나가는 힘을 기를 수 있었습니다.
+- 이미지 드래그 및 도형 삽입 등의 조금 더 그림판스러운(?) 기능을 함께 구현하지 못해 아쉽습니다.
