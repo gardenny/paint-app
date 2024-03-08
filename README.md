@@ -2,7 +2,7 @@
 
 # 🎨 Paint app
 
-자바스크립트 미니 그림판 어플 👉 [Demo](https://imjone.github.io/paint-app/)
+자바스크립트 미니 그림판 어플 👉 [Demo](https://gardenny.github.io/paint-app/)
 
 <br />
 
@@ -36,7 +36,7 @@ Canvas API를 사용하여 제작한 바닐라 자바스크립트 미니 그림�
 
 ## 💻 소스 코드
 
-전체 코드 보러 가기 👉 [Notion](https://imjone.notion.site/Paint-app-3b7fa527999141cbbe0b2885a43fed05)
+전체 코드 보러 가기 👉 [Notion](https://imjone.notion.site/Paint-app-3b7fa527999141cbbe0b2885a43fed05?pvs=4)
 
 ### 📍 그리기 모드 (선 그리기 / 지우개)
 
